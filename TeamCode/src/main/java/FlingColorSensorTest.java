@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Config
-@Autonomous(name = "ColorSensorAuto", group = "Autonomous")
-public class ColorSensorAuto extends LinearOpMode {
+@Autonomous(name = "FlingColorSensorTest", group = "Autonomous")
+public class FlingColorSensorTest extends LinearOpMode {
 
     public void runOpMode() {
         DcMotor viperSlideOne = hardwareMap.get(DcMotor.class, "viperSlideOne");
@@ -25,6 +25,7 @@ public class ColorSensorAuto extends LinearOpMode {
         Servo IntakeBlockServo = hardwareMap.get(Servo.class, "IntakeBlockServo");
         Servo barServo = hardwareMap.get(Servo.class, "BarServo");
         ColorSensor CS = hardwareMap.get(ColorSensor.class, "CS");
+
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0,0,0));
 
         viperSlideTwo.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -51,30 +52,25 @@ public class ColorSensorAuto extends LinearOpMode {
             barServo.setPosition(0);
             intakeExtension.setTargetPosition(-330);
             intakeExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            intakeExtension.setPower(0.1);
+            intakeExtension.setPower(0.3);
             intakeExtension.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             intakeArmServo.setPosition(0.12);
             intakeMotor.setPower(1);
-            if (CS.red() > 750 && CS.green() < 700) {
-                while (CS.red() > 750 && CS.green() < 700){
-                    IntakeBlockServo.setPosition(0.6);
-                    intakeArmServo.setPosition(1);
-                    intakeExtension.setPower(0);
-                }
-                sleep(250);
-                telemetry.addLine("wrong color");
-            }
             intakeArmServo.setPosition(0.12);
             IntakeBlockServo.setPosition(0);
-            if ((CS.red() > 1200 && CS.green() > 1500) || (CS.blue() > 600)) {
+            if(CS.red() > 600 && CS.green() < 700){
+                IntakeBlockServo.setPosition(0.6);
+            }
+            if ((CS.red() > 1200 && CS.green() > 1200) || (CS.blue() > 600)) {
                 telemetry.addLine("right color");
                 intakeArmServo.setPosition(1);
+                IntakeBlockServo.setPosition(0);
                 sleep(1000);
                 RightColor = true;
             }
 
         }
-        intakeMotor.setPower(-0.5);
+        intakeMotor.setPower(-1);
         sleep(1000);
 
 
@@ -82,5 +78,6 @@ public class ColorSensorAuto extends LinearOpMode {
         //FOURTH SPEC HUNG
     }
 }
+
 
 
